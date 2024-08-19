@@ -5,14 +5,16 @@
 #include <vector>
 
 #if defined(__X86_64__)
+
+#include <mkl.h>
+
+#else
+
 void vdSqrt(const int n, const double a[], double r[]) {
   for (int i = 0; i < n; i++) {
     r[i] = sqrt(a[i]);
   }
 }
-
-#else
-#include <mkl.h>
 
 #endif
 
