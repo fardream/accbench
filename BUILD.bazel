@@ -1,0 +1,5 @@
+cc_binary(
+    name = "simd-main",
+    srcs = ["simd-main.cc"],
+    deps = ["@google_benchmark//:benchmark"],
+)
