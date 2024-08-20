@@ -4,7 +4,7 @@
 #include <random>
 #include <vector>
 
-#if defined(__X86_64__) && defined(USE_MKL)
+#if defined(__X86_64__) || defined(USE_MKL)
 
 #include <mkl.h>
 
@@ -46,7 +46,9 @@ public:
 BENCHMARK_DEFINE_F(RandomVectorBM, SQRT)(benchmark::State &state) {
   for (auto _ : state) {
     for (const auto &v : this->data) {
+      state.PauseTiming();
       std::vector<double> result(v.size(), 0);
+      state.ResumeTiming();
       vdSqrt(v.size(), v.data(), result.data());
     }
   }
@@ -57,7 +59,9 @@ BENCHMARK_REGISTER_F(RandomVectorBM, SQRT);
 BENCHMARK_DEFINE_F(RandomVectorBM, POWX)(benchmark::State &state) {
   for (auto _ : state) {
     for (const auto &v : this->data) {
+      state.PauseTiming();
       std::vector<double> result(v.size(), 0);
+      state.ResumeTiming();
       vdPowx(v.size(), v.data(), 0.5, result.data());
     }
   }
