@@ -27,11 +27,11 @@ class RandomVectorBM : public benchmark::Fixture {
 public:
   std::vector<std::vector<double>> data;
 
-  void Setup(::benchmark::State &state) {
+  void SetUp(::benchmark::State &state) {
     std::mt19937 gen(0);
     std::uniform_real_distribution<double> absdis(1.0, 15.0);
 
-    for (size_t n = 900; n < 1001; n++) {
+    for (size_t n = 9000; n < 10001; n++) {
       std::vector<double> x(n, 0);
       double a = absdis(gen);
       std::uniform_real_distribution<double> thisd(-a, a);
