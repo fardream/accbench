@@ -15,6 +15,11 @@ void vdSqrt(const int n, const double a[], double r[]) {
     r[i] = sqrt(a[i]);
   }
 }
+void vdPowx(const int n, const double a[], const double b, double r[]) {
+  for (int i = 0; i < n; i++) {
+    r[i] = pow(a[i], b);
+  }
+}
 
 #endif
 
@@ -38,7 +43,7 @@ public:
   }
 };
 
-BENCHMARK_DEFINE_F(RandomVectorBM, VanillaSQRT)(benchmark::State &state) {
+BENCHMARK_DEFINE_F(RandomVectorBM, SQRT)(benchmark::State &state) {
   for (auto _ : state) {
     for (const auto &v : this->data) {
       std::vector<double> result(v.size(), 0);
@@ -47,6 +52,17 @@ BENCHMARK_DEFINE_F(RandomVectorBM, VanillaSQRT)(benchmark::State &state) {
   }
 }
 
-BENCHMARK_REGISTER_F(RandomVectorBM, VanillaSQRT);
+BENCHMARK_REGISTER_F(RandomVectorBM, SQRT);
+
+BENCHMARK_DEFINE_F(RandomVectorBM, POWX)(benchmark::State &state) {
+  for (auto _ : state) {
+    for (const auto &v : this->data) {
+      std::vector<double> result(v.size(), 0);
+      vdPowx(v.size(), v.data(), 0.5, result.data());
+    }
+  }
+}
+
+BENCHMARK_REGISTER_F(RandomVectorBM, POWX);
 
 BENCHMARK_MAIN();
