@@ -4,7 +4,7 @@
 #include <random>
 #include <vector>
 
-#if defined(__X86_64__) || defined(USE_MKL)
+#if defined(USE_MKL)
 
 #include <mkl.h>
 
