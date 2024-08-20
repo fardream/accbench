@@ -10,12 +10,12 @@
 
 #else
 
-void vdSqrt(const int n, const double a[], double r[]) {
+inline void vdSqrt(const int n, const double a[], double r[]) {
   for (int i = 0; i < n; i++) {
     r[i] = sqrt(a[i]);
   }
 }
-void vdPowx(const int n, const double a[], const double b, double r[]) {
+inline void vdPowx(const int n, const double a[], const double b, double r[]) {
   for (int i = 0; i < n; i++) {
     r[i] = pow(a[i], b);
   }
