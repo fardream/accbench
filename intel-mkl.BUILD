@@ -1,7 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
-    name = "intel-mkl-sequential",
+    name = "intel-mkl",
     srcs = [
         "lib/intel64/libmkl_core.a",
         "lib/intel64/libmkl_intel_lp64.a",

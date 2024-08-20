@@ -2,6 +2,7 @@
 
 bazel_dep(name = "rules_cc", version = "0.0.9")
 bazel_dep(name = "google_benchmark", version = "1.8.5")
+bazel_dep(name = "platforms", version = "0.0.10")
 
 new_local_repository = use_repo_rule("@bazel_tools//tools/build_defs/repo:local.bzl", "new_local_repository")
 
