@@ -8,7 +8,11 @@
 
 #include <mkl.h>
 
-#else
+#elif defined(__X86_64__)
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 inline void vdSqrt(const int n, const double a[], double r[]) {
   for (int i = 0; i < n; i++) {
@@ -20,6 +24,57 @@ inline void vdPowx(const int n, const double a[], const double b, double r[]) {
     r[i] = pow(a[i], b);
   }
 }
+
+#if defined(__cplusplus)
+}
+#endif
+
+#else
+
+#include <amath.h>
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+#define DOUBLESTEP 2
+
+inline void vdSqrt(const int n, const double a[], double r[]) {
+  const int nstep = n / DOUBLESTEP;
+  const int end = nstep * DOUBLESTEP;
+  for (int i = 0; i < end; i += DOUBLESTEP) {
+    float64x2_t input = vld1q_f64(a + i);
+    float64x2_t output = vsqrtq_f64(input);
+    vst1q_f64(r + i, output);
+  }
+
+  for (int i = end; i < n; i++) {
+    float64x1_t input = vld1_f64(a + i);
+    float64x1_t output = vsqrt_f64(input);
+    vst1_f64(r + i, output);
+  }
+}
+
+inline void vdPowx(const int n, const double a[], const double b, double r[]) {
+  const int nstep = n / DOUBLESTEP;
+  const int end = nstep * DOUBLESTEP;
+
+  float64x2_t bptr = vmovq_n_f64(b);
+
+  for (int i = 0; i < end; i += DOUBLESTEP) {
+    float64x2_t input = vld1q_f64(a + i);
+    float64x2_t output = _ZGVnN2vv_pow(input, bptr);
+    vst1q_f64(r + i, output);
+  }
+
+  for (int i = end; i < n; i++) {
+    r[i] = pow(a[i], b);
+  }
+}
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif
 

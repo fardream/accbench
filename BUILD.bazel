@@ -11,6 +11,17 @@ config_setting(
 cc_binary(
     name = "simd-main",
     srcs = ["simd-main.cc"],
+    copts = select({
+        "//:aarch64": ["-I/opt/arm/armpl_24.04_gcc/include"],
+        "//:x86_64": [],
+    }),
+    linkopts = select({
+        "//:aarch64": [
+            "-Wl,-L/opt/arm/armpl_24.04_gcc/lib",
+            "-lamath",
+        ],
+        "//:x86_64": [],
+    }),
     deps = ["@google_benchmark//:benchmark"] + select({
         "//:aarch64": [],
         "//:x86_64": ["@intel-mkl"],
