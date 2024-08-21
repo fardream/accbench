@@ -91,7 +91,7 @@ public:
       double a = absdis(gen);
       std::uniform_real_distribution<double> thisd(-a, a);
       for (size_t i = 0; i < n; i++) {
-        x[i] = thisd(gen);
+        x[i] = fabs(thisd(gen));
       }
       this->data.push_back(x);
     }
