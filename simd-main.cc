@@ -25,6 +25,12 @@ inline void vdPowx(const int n, const double a[], const double b, double r[]) {
   }
 }
 
+inline void vdLog1p(const int n, const double a[], double r[]) {
+  for (int i = 0; i < n; i++) {
+    r[i] = log1p(a[i]);
+  }
+}
+
 #if defined(__cplusplus)
 }
 #endif
@@ -69,6 +75,20 @@ inline void vdPowx(const int n, const double a[], const double b, double r[]) {
 
   for (int i = end; i < n; i++) {
     r[i] = pow(a[i], b);
+  }
+}
+
+inline void vdLog1p(const int n, const double a[], double r[]) {
+  const int nstep = n / DOUBLESTEP;
+  const int end = nstep * DOUBLESTEP;
+  for (int i = 0; i < end; i += DOUBLESTEP) {
+    float64x2_t input = vld1q_f64(a + i);
+    float64x2_t output = _ZGVnN2v_log1p(input);
+    vst1q_f64(r + i, output);
+  }
+
+  for (int i = end; i < n; i++) {
+    r[i] = log1p(a[i]);
   }
 }
 
@@ -123,5 +143,18 @@ BENCHMARK_DEFINE_F(RandomVectorBM, POWX)(benchmark::State &state) {
 }
 
 BENCHMARK_REGISTER_F(RandomVectorBM, POWX);
+
+BENCHMARK_DEFINE_F(RandomVectorBM, LOG1P)(benchmark::State &state) {
+  for (auto _ : state) {
+    for (const auto &v : this->data) {
+      state.PauseTiming();
+      std::vector<double> result(v.size(), 0);
+      state.ResumeTiming();
+      vdLog1p(v.size(), v.data(), result.data());
+    }
+  }
+}
+
+BENCHMARK_REGISTER_F(RandomVectorBM, LOG1P);
 
 BENCHMARK_MAIN();
