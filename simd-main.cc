@@ -117,7 +117,7 @@ BENCHMARK_DEFINE_F(RandomVectorBM, POWX)(benchmark::State &state) {
       state.PauseTiming();
       std::vector<double> result(v.size(), 0);
       state.ResumeTiming();
-      vdPowx(v.size(), v.data(), 0.5, result.data());
+      vdPowx(v.size(), v.data(), 0.7, result.data());
     }
   }
 }
