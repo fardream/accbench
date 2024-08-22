@@ -8,7 +8,7 @@
 
 #include <mkl.h>
 
-#elif defined(__X86_64__)
+#elif __X86_64__
 
 #if defined(__cplusplus)
 extern "C" {
